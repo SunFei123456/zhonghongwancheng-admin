@@ -31,11 +31,12 @@ const navItems: NavItem[] = [
     name: "Dashboard",
     subItems: [{ name: "Ecommerce", path: "/", pro: false }],
   },
-  {
-    icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/calendar",
-  },
+  // Calendar 菜单项已隐藏 - 目前不需要
+  // {
+  //   icon: <CalenderIcon />,
+  //   name: "Calendar",
+  //   path: "/calendar",
+  // },
   {
     icon: <UserCircleIcon />,
     name: "User Profile",

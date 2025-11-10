@@ -1,0 +1,11 @@
+docs: 添加功能清理计划文档并隐藏 Calendar 页面
+
+- 新增功能清理计划文档，规划项目功能清理策略
+- 隐藏 Calendar 页面路由和菜单项（保留代码，便于后续恢复）
+- 注释 Calendar 相关的路由配置和菜单项
+
+变更文件:
+- docs/功能清理计划.md (新增)
+- src/App.tsx (注释 Calendar 路由)
+- src/layout/AppSidebar.tsx (注释 Calendar 菜单项)
+
