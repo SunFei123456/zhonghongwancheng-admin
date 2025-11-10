@@ -3,16 +3,16 @@ import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
 import {
-  BoxCubeIcon,
-  CalenderIcon,
+  // BoxCubeIcon, // 已隐藏 - UI Elements 菜单已隐藏
+  // CalenderIcon, // 已隐藏 - Calendar 菜单已隐藏
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
+  // ListIcon, // 已隐藏 - Forms 菜单已隐藏
+  // PageIcon, // 已隐藏 - Pages 菜单已隐藏
+  // PieChartIcon, // 已隐藏 - Charts 菜单已隐藏
   PlugInIcon,
-  TableIcon,
+  // TableIcon, // 已隐藏 - Tables 菜单已隐藏
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
@@ -42,47 +42,53 @@ const navItems: NavItem[] = [
     name: "User Profile",
     path: "/profile",
   },
-  {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-  },
-  {
-    name: "Tables",
-    icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
-  },
-  {
-    name: "Pages",
-    icon: <PageIcon />,
-    subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false },
-    ],
-  },
+  // Forms - 示例组件，已隐藏
+  // {
+  //   name: "Forms",
+  //   icon: <ListIcon />,
+  //   subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+  // },
+  // Tables - 示例组件，已隐藏
+  // {
+  //   name: "Tables",
+  //   icon: <TableIcon />,
+  //   subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+  // },
+  // Pages - 示例组件，已隐藏（404 Error 保留在路由中，但不显示在菜单）
+  // {
+  //   name: "Pages",
+  //   icon: <PageIcon />,
+  //   subItems: [
+  //     { name: "Blank Page", path: "/blank", pro: false },
+  //     { name: "404 Error", path: "/error-404", pro: false },
+  //   ],
+  // },
 ];
 
 const othersItems: NavItem[] = [
-  {
-    icon: <PieChartIcon />,
-    name: "Charts",
-    subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
-    ],
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "UI Elements",
-    subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
-    ],
-  },
+  // Charts - 示例组件，已隐藏
+  // {
+  //   icon: <PieChartIcon />,
+  //   name: "Charts",
+  //   subItems: [
+  //     { name: "Line Chart", path: "/line-chart", pro: false },
+  //     { name: "Bar Chart", path: "/bar-chart", pro: false },
+  //   ],
+  // },
+  // UI Elements - 示例组件，已隐藏
+  // {
+  //   icon: <BoxCubeIcon />,
+  //   name: "UI Elements",
+  //   subItems: [
+  //     { name: "Alerts", path: "/alerts", pro: false },
+  //     { name: "Avatar", path: "/avatars", pro: false },
+  //     { name: "Badge", path: "/badge", pro: false },
+  //     { name: "Buttons", path: "/buttons", pro: false },
+  //     { name: "Images", path: "/images", pro: false },
+  //     { name: "Videos", path: "/videos", pro: false },
+  //   ],
+  // },
+  // Authentication 保留 - 这是登录注册页面，不是示例组件
   {
     icon: <PlugInIcon />,
     name: "Authentication",

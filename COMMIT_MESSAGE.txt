@@ -1,11 +1,25 @@
-docs: 添加功能清理计划文档并隐藏 Calendar 页面
+refactor: 隐藏所有示例 UI 组件，清理项目结构
 
-- 新增功能清理计划文档，规划项目功能清理策略
-- 隐藏 Calendar 页面路由和菜单项（保留代码，便于后续恢复）
-- 注释 Calendar 相关的路由配置和菜单项
+- 隐藏 Forms、Tables、Pages、Charts、UI Elements 等示例组件
+- 注释所有示例组件的路由配置
+- 注释所有示例组件的菜单项
+- 清理未使用的图标导入（BoxCubeIcon、CalenderIcon、ListIcon、PageIcon、PieChartIcon、TableIcon）
+- 保留 Dashboard、User Profile、Authentication 等核心功能
+- 所有代码保留在文件中，便于后续恢复
 
 变更文件:
-- docs/功能清理计划.md (新增)
-- src/App.tsx (注释 Calendar 路由)
-- src/layout/AppSidebar.tsx (注释 Calendar 菜单项)
+- src/App.tsx (注释示例组件路由)
+- src/layout/AppSidebar.tsx (注释示例组件菜单项和未使用的图标导入)
 
+隐藏的组件:
+- Forms (表单元素示例)
+- Tables (表格示例)
+- Pages (Blank Page 示例)
+- Charts (Line Chart、Bar Chart 示例)
+- UI Elements (Alerts、Avatars、Badge、Buttons、Images、Videos 示例)
+
+保留的功能:
+- Dashboard (仪表板)
+- User Profile (用户资料)
+- Authentication (登录/注册)
+- 404 错误页面 (路由中保留)
