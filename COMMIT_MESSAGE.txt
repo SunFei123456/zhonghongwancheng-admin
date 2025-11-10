@@ -1,3 +1,52 @@
+
+refactor: 将网站所有英文文本替换为中文
+
+本次提交将管理后台系统中所有用户可见的英文文本全面替换为中文，以适配中文站点需求。
+
+## 主要变更内容
+
+### 1. 导航和布局组件
+- 侧边栏菜单：Dashboard → 仪表板，User Profile → 用户资料，Authentication → 登录注册
+- Header 搜索框：placeholder 和 aria-label 中文化
+- 面包屑导航：Home → 首页
+
+### 2. 认证页面
+- 登录/注册表单：所有表单标签、按钮、提示信息中文化
+- 第三方登录按钮：Google、X 登录/注册按钮文本中文化
+- 页面标题和描述：所有 PageMeta 标题更新为中文
+
+### 3. Dashboard 组件
+- 指标卡片：Customers → 客户，Orders → 订单
+- 图表组件：月度销售、月度目标、统计图表标题和标签中文化
+- 月份标签：Jan-Dec → 1月-12月
+- 表格列标题：Products → 产品，Category → 分类，Price → 价格，Status → 状态
+- 订单状态：Delivered → 已送达，Pending → 待处理，Canceled → 已取消
+
+### 4. 用户资料页面
+- 个人信息表单：First Name → 姓，Last Name → 名，Email → 邮箱地址，Phone → 电话
+- 地址信息：Country → 国家，City/State → 城市/省份，Postal Code → 邮政编码
+- 编辑按钮和模态框：所有操作按钮和提示信息中文化
+
+### 5. 下拉菜单组件
+- 用户下拉菜单：编辑资料、账户设置、帮助支持、退出登录
+- 通知下拉菜单：通知标题和示例内容中文化
+
+### 6. 其他页面
+- 404 错误页面：错误提示和返回按钮中文化
+- 认证布局：描述文本更新为"中鸿万城管理后台系统"
+- ChartTab：Monthly → 月度，Quarterly → 季度，Annually → 年度
+
+## 修改的文件列表
+（23个文件）
+
+## 影响范围
+- 所有用户界面文本已完全中文化
+- 不影响功能逻辑，仅进行文本替换
+- 保持代码结构和组件功能不变
+
+
+---
+
 refactor: 删除 SidebarWidget 推广组件
 
 - 删除 SidebarWidget 组件文件

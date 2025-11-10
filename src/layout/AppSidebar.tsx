@@ -27,8 +27,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
-    name: "Dashboard",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    name: "仪表板",
+    subItems: [{ name: "首页", path: "/", pro: false }],
   },
   // Calendar 菜单项已隐藏 - 目前不需要
   // {
@@ -38,7 +38,7 @@ const navItems: NavItem[] = [
   // },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
+    name: "用户资料",
     path: "/profile",
   },
   // Forms - 示例组件，已隐藏
@@ -90,10 +90,10 @@ const othersItems: NavItem[] = [
   // Authentication 保留 - 这是登录注册页面，不是示例组件
   {
     icon: <PlugInIcon />,
-    name: "Authentication",
+    name: "登录注册",
     subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
+      { name: "登录", path: "/signin", pro: false },
+      { name: "注册", path: "/signup", pro: false },
     ],
   },
 ];
@@ -314,7 +314,7 @@ const AppSidebar: React.FC = () => {
             <>
               <img
                 className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/images/logo/logo.png"
                 alt="Logo"
                 width={150}
                 height={40}
@@ -349,7 +349,7 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  "菜单"
                 ) : (
                   <HorizontaLDots className="size-6" />
                 )}
@@ -365,7 +365,7 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  "其他"
                 ) : (
                   <HorizontaLDots />
                 )}

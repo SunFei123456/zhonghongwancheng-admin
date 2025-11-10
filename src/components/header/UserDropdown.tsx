@@ -23,7 +23,7 @@ export default function UserDropdown() {
           <img src="/images/user/owner.jpg" alt="User" />
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">Musharof</span>
+        <span className="block mr-1 font-medium text-theme-sm">用户</span>
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
@@ -51,10 +51,10 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            Musharof Chowdhury
+            用户名称
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            randomuser@pimjo.com
+            user@example.com
           </span>
         </div>
 
@@ -81,7 +81,7 @@ export default function UserDropdown() {
                   fill=""
                 />
               </svg>
-              Edit profile
+              编辑资料
             </DropdownItem>
           </li>
           <li>
@@ -106,7 +106,7 @@ export default function UserDropdown() {
                   fill=""
                 />
               </svg>
-              Account settings
+              账户设置
             </DropdownItem>
           </li>
           <li>
@@ -131,7 +131,7 @@ export default function UserDropdown() {
                   fill=""
                 />
               </svg>
-              Support
+              帮助支持
             </DropdownItem>
           </li>
         </ul>
@@ -154,7 +154,7 @@ export default function UserDropdown() {
               fill=""
             />
           </svg>
-          Sign out
+          退出登录
         </Link>
       </Dropdown>
     </div>
