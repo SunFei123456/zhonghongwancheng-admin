@@ -1,4 +1,48 @@
+refactor: 将网站色调从蓝色系更改为红色系(#d12b26)
 
+本次提交将管理后台系统的主题色从原来的蓝色系(#465fff)更改为红色系(#d12b26)，以匹配品牌需求。
+
+## 主要变更内容
+
+### 1. CSS变量更新
+- 更新所有品牌色变量(--color-brand-25至--color-brand-950)
+- 将蓝色色调值替换为对应的红色系色调值
+- 更新焦点阴影颜色以匹配新的红色主题
+
+### 2. 图表组件颜色更新
+- StatisticsChart.tsx: 更新图表线条颜色
+- MonthlyTarget.tsx: 更新环形图颜色
+- MonthlySalesChart.tsx: 更新柱状图颜色
+- CountryMap.tsx: 更新地图标记和悬停颜色
+- BarChartOne.tsx: 更新条形图颜色
+- LineChartOne.tsx: 更新折线图颜色
+
+### 3. 日历组件颜色更新
+- 更新日历选择器和日期范围选择器的背景色
+- 确保日历组件与新主题色保持一致
+
+## 修改的文件列表
+- src/index.css (更新CSS变量定义)
+- src/components/ecommerce/StatisticsChart.tsx
+- src/components/ecommerce/MonthlyTarget.tsx
+- src/components/ecommerce/MonthlySalesChart.tsx
+- src/components/ecommerce/CountryMap.tsx
+- src/components/charts/bar/BarChartOne.tsx
+- src/components/charts/line/LineChartOne.tsx
+
+## 影响范围
+- 所有显示的路由页面组件的UI色调已更新
+- 仪表板、用户资料等页面的视觉风格已统一为红色系
+- 保持了原有的渐变和透明度效果
+- 深色模式下的样式也相应更新
+
+---
+
+refactor: 网站icon 替换自己的
+
+
+
+---
 refactor: 将网站所有英文文本替换为中文
 
 本次提交将管理后台系统中所有用户可见的英文文本全面替换为中文，以适配中文站点需求。
