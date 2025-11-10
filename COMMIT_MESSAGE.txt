@@ -1,3 +1,20 @@
+refactor: 删除 SidebarWidget 推广组件
+
+- 删除 SidebarWidget 组件文件
+- 从 AppSidebar 中移除 SidebarWidget 的导入和使用
+- 清理侧边栏，移除推广内容
+
+变更文件:
+- src/layout/AppSidebar.tsx (移除 SidebarWidget 导入和使用)
+- src/layout/SidebarWidget.tsx (删除文件)
+
+原因:
+- SidebarWidget 是原项目的推广组件，显示购买链接
+- 二次开发项目中不需要推广内容
+- 简化侧边栏结构
+
+---
+
 refactor: 隐藏所有示例 UI 组件，清理项目结构
 
 - 隐藏 Forms、Tables、Pages、Charts、UI Elements 等示例组件
@@ -23,3 +40,16 @@ refactor: 隐藏所有示例 UI 组件，清理项目结构
 - User Profile (用户资料)
 - Authentication (登录/注册)
 - 404 错误页面 (路由中保留)
+
+---
+
+docs: 添加功能清理计划文档并隐藏 Calendar 页面
+
+- 新增功能清理计划文档，规划项目功能清理策略
+- 隐藏 Calendar 页面路由和菜单项（保留代码，便于后续恢复）
+- 注释 Calendar 相关的路由配置和菜单项
+
+变更文件:
+- docs/功能清理计划.md (新增)
+- src/App.tsx (注释 Calendar 路由)
+- src/layout/AppSidebar.tsx (注释 Calendar 菜单项)
