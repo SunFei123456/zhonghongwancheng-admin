@@ -22,14 +22,14 @@ export interface ApiResponse<T = any> {
 export interface PaginatedApiResponse<T = any> {
   code: number;
   message: string;
-  data: T[];
-  pagination: {
-    page: number;
-    size: number;
-    total: number;
-    pages: number;
-    has_next: boolean;
-    has_prev: boolean;
+  data: {
+    items: T[];
+    page: {
+      page: number;
+      size: number;
+      total: number;
+      pages: number;
+    };
   };
   timestamp?: string;
 }

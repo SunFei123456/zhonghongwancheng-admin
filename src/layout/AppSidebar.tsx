@@ -7,6 +7,7 @@ import {
   // CalenderIcon, // 已隐藏 - Calendar 菜单已隐藏
   ChevronDownIcon,
   GridIcon,
+  GroupIcon, // 新增：导入 GroupIcon
   HorizontaLDots,
   // ListIcon, // 已隐藏 - Forms 菜单已隐藏
   // PageIcon, // 已隐藏 - Pages 菜单已隐藏
@@ -16,12 +17,14 @@ import {
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
+import { useAuth } from "../context/AuthContext"; // 新增：导入 useAuth
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  adminOnly?: boolean; // 新增：用于标记仅管理员可见的菜单项
 };
 
 const navItems: NavItem[] = [
@@ -40,6 +43,13 @@ const navItems: NavItem[] = [
     icon: <UserCircleIcon />,
     name: "用户资料",
     path: "/profile",
+  },
+  // 新增：用户管理菜单项
+  {
+    icon: <GroupIcon />,
+    name: "用户管理",
+    path: "/user-management",
+    adminOnly: true, // 标记为仅管理员可见
   },
   // Forms - 示例组件，已隐藏
   // {
@@ -100,6 +110,7 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isAdmin } = useAuth(); // 新增：获取管理员状态
   const location = useLocation();
 
   const [openSubmenu, setOpenSubmenu] = useState<{
@@ -168,7 +179,9 @@ const AppSidebar: React.FC = () => {
 
   const renderMenuItems = (items: NavItem[], menuType: "main" | "others") => (
     <ul className="flex flex-col gap-4">
-      {items.map((nav, index) => (
+      {items
+        .filter(item => !item.adminOnly || isAdmin) // 新增：过滤非管理员菜单项
+        .map((nav, index) => (
         <li key={nav.name}>
           {nav.subItems ? (
             <button

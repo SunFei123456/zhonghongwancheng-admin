@@ -21,6 +21,8 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 // import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
+import UserManagement from "./pages/UserManagement";
+import AdminRoute from "./components/auth/AdminRoute";
 import Home from "./pages/Dashboard/Home";
 
 export default function App() {
@@ -36,6 +38,8 @@ export default function App() {
 
               {/* Others Page - 需要认证 */}
               <Route path="/profile" element={<UserProfiles />} />
+              {/* 新增：用户管理页面，仅限管理员访问 */}
+              <Route path="/user-management" element={<AdminRoute><UserManagement /></AdminRoute>} />
               {/* Calendar 页面已隐藏 - 目前不需要 */}
               {/* <Route path="/calendar" element={<Calendar />} /> */}
               {/* Blank 页面已隐藏 - 示例页面，目前不需要 */}
