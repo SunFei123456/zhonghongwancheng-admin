@@ -3,14 +3,48 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import { UserInfo, authService, UserUpdateData } from "../../services";
+import { useAuth } from "../../context/AuthContext";
+import { useState, useEffect } from "react";
 
-export default function UserInfoCard() {
+interface UserInfoCardProps {
+  user: UserInfo | null;
+}
+
+export default function UserInfoCard({ user }: UserInfoCardProps) {
   const { isOpen, openModal, closeModal } = useModal();
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
+  const { refreshUser } = useAuth();
+  const [formData, setFormData] = useState<UserUpdateData>({});
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        nickname: user.nickname,
+        gender: user.gender,
+        bio: user.bio,
+      });
+    }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
+
+  const handleSave = async () => {
+    try {
+      await authService.updateUserProfile(formData);
+      await refreshUser();
+      closeModal();
+    } catch (error) {
+      console.error("Failed to update user profile:", error);
+    }
+  };
+
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -25,7 +59,7 @@ export default function UserInfoCard() {
                 姓
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                张
+                {user?.first_name || "-"}
               </p>
             </div>
 
@@ -34,7 +68,7 @@ export default function UserInfoCard() {
                 名
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                三
+                {user?.last_name || "-"}
               </p>
             </div>
 
@@ -43,16 +77,47 @@ export default function UserInfoCard() {
                 邮箱地址
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                user@example.com
+                {user?.email || "-"}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                电话
+                角色
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +86 138 0000 0000
+                {user?.role === 'admin' ? (
+                  <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-300">管理员</span>
+                ) : (
+                  <span className="px-2 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">普通用户</span>
+                )}
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                状态
+              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.status === "approved" ? "已批准" : user?.status === "pending" ? "待审批" : "已拒绝"}
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                性别
+              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.gender === "male" ? "男" : user?.gender === "female" ? "女" : "-"}
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                昵称
+              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.nickname || "-"}
               </p>
             </div>
 
@@ -61,7 +126,7 @@ export default function UserInfoCard() {
                 简介
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                团队经理
+                {user?.bio || "-"}
               </p>
             </div>
           </div>
@@ -102,39 +167,6 @@ export default function UserInfoCard() {
           </div>
           <form className="flex flex-col">
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
-              <div>
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  社交链接
-                </h5>
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div>
-                    <Label>Facebook</Label>
-                    <Input
-                      type="text"
-                      value="https://www.facebook.com/PimjoHQ"
-                    />
-                  </div>
-
-                  <div>
-                    <Label>X.com</Label>
-                    <Input type="text" value="https://x.com/PimjoHQ" />
-                  </div>
-
-                  <div>
-                    <Label>Linkedin</Label>
-                    <Input
-                      type="text"
-                      value="https://www.linkedin.com/company/pimjo"
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Instagram</Label>
-                    <Input type="text" value="https://instagram.com/PimjoHQ" />
-                  </div>
-                </div>
-              </div>
               <div className="mt-7">
                 <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                   个人信息
@@ -143,27 +175,41 @@ export default function UserInfoCard() {
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
                     <Label>姓</Label>
-                    <Input type="text" value="张" />
+                    <Input name="first_name" type="text" value={formData.first_name || ""} onChange={handleChange} />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>名</Label>
-                    <Input type="text" value="三" />
+                    <Input name="last_name" type="text" value={formData.last_name || ""} onChange={handleChange} />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>邮箱地址</Label>
-                    <Input type="text" value="user@example.com" />
+                    <Input type="text" value={user?.email || ""} disabled />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>电话</Label>
-                    <Input type="text" value="+86 138 0000 0000" />
+                    <Label>性别</Label>
+                    <select
+                      name="gender"
+                      className="w-full rounded-lg border-[1.5px] border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-800 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-primary"
+                      value={formData.gender || ""}
+                      onChange={handleChange}
+                    >
+                      <option value="">请选择</option>
+                      <option value="male">男</option>
+                      <option value="female">女</option>
+                    </select>
+                  </div>
+
+                  <div className="col-span-2 lg:col-span-1">
+                    <Label>昵称</Label>
+                    <Input name="nickname" type="text" value={formData.nickname || ""} onChange={handleChange} />
                   </div>
 
                   <div className="col-span-2">
                     <Label>简介</Label>
-                    <Input type="text" value="团队经理" />
+                    <Input name="bio" type="text" value={formData.bio || ""} onChange={handleChange} />
                   </div>
                 </div>
               </div>

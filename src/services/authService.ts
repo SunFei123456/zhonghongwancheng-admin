@@ -30,6 +30,16 @@ export interface UserInfo {
   created_at: string;
 }
 
+// 用户更新数据接口
+export interface UserUpdateData {
+  first_name?: string;
+  last_name?: string;
+  nickname?: string;
+  gender?: string;
+  bio?: string;
+  avatar_url?: string;
+}
+
 // 登录响应数据接口
 export interface LoginResponseData {
   access_token: string;
@@ -60,6 +70,22 @@ class AuthService {
   // 获取用户信息
   async getUserProfile(): Promise<ApiResponse<UserInfo>> {
     return await httpClient.get('/auth/profile');
+  }
+
+  // 更新用户信息
+  async updateUserProfile(userData: UserUpdateData): Promise<ApiResponse<UserInfo>> {
+    return await httpClient.put('/auth/profile', userData);
+  }
+
+  // 上传用户头像
+  async uploadAvatar(file: File): Promise<ApiResponse<UserInfo>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return await httpClient.post('/auth/upload-avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   }
 
   // 存储认证信息到本地存储

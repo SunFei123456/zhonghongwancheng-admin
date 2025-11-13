@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { authService, UserInfo, UserLoginData, UserRegisterData } from '../services';
+import { authService, UserInfo, UserLoginData, UserRegisterData, ApiResponse, LoginResponseData } from '../services';
 
 // 认证状态接口
 interface AuthState {
@@ -12,8 +12,8 @@ interface AuthState {
 
 // 认证上下文接口
 interface AuthContextType extends AuthState {
-  login: (credentials: UserLoginData) => Promise<{ success: boolean; message?: string }>;
-  register: (userData: UserRegisterData) => Promise<{ success: boolean; message?: string }>;
+  login: (credentials: UserLoginData) => Promise<ApiResponse<LoginResponseData>>;
+  register: (userData: UserRegisterData) => Promise<ApiResponse<UserInfo>>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.getUserProfile();
       
-      if (response.success && response.data) {
+      if (response.code === 200 && response.data) {
         const user = response.data;
         
         // 更新本地存储
@@ -114,7 +114,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // 登录函数
-  const login = async (credentials: UserLoginData): Promise<{ success: boolean; message?: string }> => {
+  const login = async (credentials: UserLoginData): Promise<ApiResponse<LoginResponseData>> => {
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     try {
@@ -122,7 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       console.log('登录响应:', response);
       
-      if (response.success && response.data) {
+      if (response.code === 200 && response.data) {
         const { access_token, user } = response.data;
         
         // 存储认证信息
@@ -137,47 +137,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           isLoading: false,
         });
         
-        return { success: true, message: response.message };
       } else {
         // 登录失败，返回服务器提供的错误消息
         console.log('登录失败消息:', response.message);
-        setAuthState(prev => ({ ...prev, isLoading: false }));
-        return { success: false, message: response.message };
       }
+
+      // 无论成功失败，都返回原始响应
+      setAuthState(prev => ({ ...prev, isLoading: false }));
+      return response;
     } catch (error) {
       console.error('登录失败:', error);
       setAuthState(prev => ({ ...prev, isLoading: false }));
-
-      // 尝试从错误对象中获取消息
-      if (error) {
-        // 直接检查是否有 message 属性
-        if (typeof error === 'object' && 'message' in error) {
-          return { success: false, message: (error as any).message };
-        }
-        // 如果是 Error 实例
-        if (error instanceof Error) {
-          return { success: false, message: error.message };
-        }
-        // 如果是字符串
-        if (typeof error === 'string') {
-          try {
-            const errorObj = JSON.parse(error);
-            if (errorObj && errorObj.message) {
-              return { success: false, message: errorObj.message };
-            }
-          } catch (e) {
-            // 解析失败，返回原始字符串
-            return { success: false, message: error };
-          }
-        }
-      }
-
-      return { success: false, message: '登录失败，请稍后再试' };
+      throw error;
     }
   };
 
   // 注册函数
-  const register = async (userData: UserRegisterData): Promise<{ success: boolean; message?: string }> => {
+  const register = async (userData: UserRegisterData): Promise<ApiResponse<UserInfo>> => {
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     try {
@@ -185,15 +161,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       setAuthState(prev => ({ ...prev, isLoading: false }));
       
-      if (response.success) {
-        return { success: true, message: response.message || '注册成功，请等待管理员审批' };
-      } else {
-        return { success: false, message: response.message };
-      }
+      // 无论成功失败，都返回原始响应
+      return response;
     } catch (error) {
       console.error('注册失败:', error);
       setAuthState(prev => ({ ...prev, isLoading: false }));
-      return { success: false, message: '注册失败，请稍后再试' };
+      throw error;
     }
   };
 

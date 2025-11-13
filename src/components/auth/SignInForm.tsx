@@ -63,26 +63,28 @@ export default function SignInForm() {
   // 处理表单提交
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // 清除之前的错误消息
     setErrorMessage("");
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const result = await login(formData);
-      
-      console.log('登录结果:', result);
-      
-      if (result.success) {
+
+      console.log('登录结果11111:', result);
+
+      if (result.code === 200) {
         // 登录成功，跳转到仪表板
         navigate("/");
+        
+        // 显示绿色的成功提示
+        setErrorMessage(result.message);
       } else {
-        console.log('显示错误消息:', result.message);
         // 直接使用服务器返回的错误消息，不使用默认值
         setErrorMessage(result.message);
       }
@@ -93,7 +95,7 @@ export default function SignInForm() {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
@@ -129,7 +131,7 @@ export default function SignInForm() {
             
             {/* 错误消息 */}
             {errorMessage && (
-              <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-md dark:bg-red-900/30 dark:text-red-400">
+              <div className={`mb-4 p-3 text-sm rounded-md ${errorMessage && errorMessage.includes("成功") ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} dark:bg-gray-900/30`}>
                 {errorMessage}
               </div>
             )}

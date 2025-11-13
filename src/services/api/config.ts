@@ -12,17 +12,14 @@ export enum HttpMethod {
 
 // API响应接口
 export interface ApiResponse<T = any> {
-  success: boolean;
   code: number;
   message: string;
   data?: T;
   timestamp?: string;
-  request_id?: string;
 }
 
 // 分页响应接口
 export interface PaginatedApiResponse<T = any> {
-  success: boolean;
   code: number;
   message: string;
   data: T[];
@@ -35,7 +32,6 @@ export interface PaginatedApiResponse<T = any> {
     has_prev: boolean;
   };
   timestamp?: string;
-  request_id?: string;
 }
 
 // 错误详情接口
@@ -47,10 +43,8 @@ export interface ErrorDetail {
 
 // 错误响应接口
 export interface ErrorResponse {
-  success: false;
   code: number;
   message: string;
   errors?: ErrorDetail[];
   timestamp?: string;
-  request_id?: string;
 }
