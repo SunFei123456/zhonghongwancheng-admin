@@ -1,14 +1,99 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+import { useAuth } from "../../context/AuthContext";
+import { UserLoginData } from "../../services";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  
+  // 表单状态
+  const [formData, setFormData] = useState<UserLoginData>({
+    email: "",
+    password: ""
+  });
+  
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  
+  // 处理表单字段变化
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // 清除该字段的错误信息
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
+    }
+  };
+  
+  // 表单验证
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.email.trim()) {
+      newErrors.email = "请输入邮箱";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "请输入有效的邮箱地址";
+    }
+    
+    if (!formData.password) {
+      newErrors.password = "请输入密码";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  // 处理表单提交
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // 清除之前的错误消息
+    setErrorMessage("");
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const result = await login(formData);
+      
+      console.log('登录结果:', result);
+      
+      if (result.success) {
+        // 登录成功，跳转到仪表板
+        navigate("/");
+      } else {
+        console.log('显示错误消息:', result.message);
+        // 直接使用服务器返回的错误消息，不使用默认值
+        setErrorMessage(result.message);
+      }
+    } catch (error) {
+      console.error("登录错误:", error);
+      setErrorMessage("登录过程中发生错误，请稍后再试");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
@@ -41,13 +126,29 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-            <form>
+            
+            {/* 错误消息 */}
+            {errorMessage && (
+              <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-md dark:bg-red-900/30 dark:text-red-400">
+                {errorMessage}
+              </div>
+            )}
+            
+            <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     邮箱 <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input 
+                    placeholder="info@gmail.com" 
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    error={!!errors.email}
+                    hint={errors.email}
+                  />
                 </div>
                 <div>
                   <Label>
@@ -57,6 +158,11 @@ export default function SignInForm() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="请输入您的密码"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      error={!!errors.password}
+                      hint={errors.password}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -85,8 +191,13 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    登录
+                  <Button 
+                    type="submit"
+                    className="w-full" 
+                    size="sm"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "登录中..." : "登录"}
                   </Button>
                 </div>
               </div>
